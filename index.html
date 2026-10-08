@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rifa Beneficente</title>
+  <title>Rifa Online</title>
   <style>
     :root {
       --primary: #25d366;
       --dark: #121212;
-      --card-bg: #1e1e1e;
+      --card-bg: rgba(30, 30, 30, 0.93);
       --text: #ffffff;
       --text-muted: #a0a0a0;
       --occupied: #dc3545;
@@ -22,11 +22,17 @@
     }
 
     body {
-      background-color: var(--dark);
+      background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('TULO.webp');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      
       color: var(--text);
       display: flex;
       justify-content: center;
       padding: 20px;
+      min-height: 100vh;
     }
 
     .container {
@@ -40,12 +46,23 @@
       background: var(--card-bg);
       padding: 20px;
       border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     h1 {
       font-size: 1.8rem;
       margin-bottom: 8px;
       color: var(--primary);
+    }
+
+    .prize-img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      border-radius: 12px;
+      margin: 15px auto;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
 
     .info-box {
@@ -87,6 +104,9 @@
       gap: 15px;
       margin-bottom: 20px;
       font-size: 0.85rem;
+      background: var(--card-bg);
+      padding: 8px;
+      border-radius: 8px;
     }
 
     .legend-item {
@@ -101,7 +121,7 @@
       border-radius: 50%;
     }
 
-    .dot.available { background: var(--card-bg); border: 1px solid #444; }
+    .dot.available { background: #2a2a2a; border: 1px solid #444; }
     .dot.selected { background: var(--primary); }
     .dot.occupied { background: var(--occupied); }
 
@@ -112,12 +132,15 @@
       max-height: 400px;
       overflow-y: auto;
       padding-right: 5px;
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
     }
 
     .number-btn {
       aspect-ratio: 1;
-      background: var(--card-bg);
-      border: 1px solid #333;
+      background: #2a2a2a;
+      border: 1px solid #444;
       border-radius: 8px;
       color: var(--text);
       font-weight: bold;
@@ -132,12 +155,14 @@
     .number-btn.selected {
       background: var(--primary);
       color: #000;
+      border-color: var(--primary);
     }
 
     .number-btn:disabled {
       background: var(--occupied);
       opacity: 0.6;
       cursor: not-allowed;
+      border-color: var(--occupied);
     }
 
     .footer-action {
@@ -176,9 +201,12 @@
   <div class="container">
     <header>
       <h1>🎟️ Rifa Online</h1>
+      
+      <img src="relogio mandala.jpeg" alt="Foto do Prêmio" class="prize-img" />
+
       <p class="info-box">
         Escolha seus números abaixo e clique em "Reservar pelo WhatsApp".<br>
-        <strong>Valor por número:</strong> R$5,00
+        <strong>Valor por número:</strong> R$ 5,00
       </p>
       <div class="date-badge">📅 Sorteio: 13/11/2026</div>
     </header>
@@ -207,9 +235,9 @@
   <script>
     // Configurações
     const TOTAL_NUMBERS = 500;
-    const PHONE_NUMBER = "5531997163796"; // COLOQUE SEU WHATSAPP AQUI (Com DDD)
+    const PHONE_NUMBER = "5531999999999"; // COLOQUE SEU WHATSAPP AQUI (Com DDD)
     
-    // Insira aqui números que já foram vendidos para desativar no site
+    // Insira aqui os números que já foram vendidos para desativar no site
     const OCCUPIED_NUMBERS = []; 
 
     let selectedNumbers = [];
