@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rifa Beneficente</title>
+  <style>
+    :root {
+      --primary: #25d366;
+      --dark: #121212;
+      --card-bg: #1e1e1e;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --occupied: #dc3545;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .info-box {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .date-badge {
+      display: inline-block;
+      background: #333;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: var(--card-bg);
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot.available { background: var(--card-bg); border: 1px solid #444; }
+    .dot.selected { background: var(--primary); }
+    .dot.occupied { background: var(--occupied); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .number-btn {
+      aspect-ratio: 1;
+      background: var(--card-bg);
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: var(--text);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .number-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+    }
+
+    .number-btn.selected {
+      background: var(--primary);
+      color: #000;
+    }
+
+    .number-btn:disabled {
+      background: var(--occupied);
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .footer-action {
+      position: sticky;
+      bottom: 20px;
+      margin-top: 20px;
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .buy-btn {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .buy-btn:disabled {
+      background: #444;
+      color: #888;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🎟️ Rifa Online</h1>
+      <p class="info-box">
+        Escolha seus números abaixo e clique em "Reservar pelo WhatsApp".<br>
+        <strong>Valor por número:</strong> R$ 10,00
+      </p>
+      <div class="date-badge">📅 Sorteio: 13/11/2026</div>
+    </header>
+
+    <div class="controls">
+      <input type="text" id="search" placeholder="Buscar número..." oninput="filterNumbers()" />
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="dot available"></div> Livre</div>
+      <div class="legend-item"><div class="dot selected"></div> Selecionado</div>
+      <div class="legend-item"><div class="dot occupied"></div> Ocupado</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer-action">
+      <div>
+        <small style="color: var(--text-muted);">Selecionados:</small>
+        <div id="selected-list" style="font-weight: bold;">Nenhum</div>
+      </div>
+      <button class="buy-btn" id="buy-btn" disabled onclick="checkout()">Reservar no WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    // Configurações
+    const TOTAL_NUMBERS = 500;
+    const PHONE_NUMBER = "5531999999999"; // COLOQUE SEU WHATSAPP AQUI (Com DDD)
+    
+    // Insira aqui os números que já foram vendidos para desativar no site
+    const OCCUPIED_NUMBERS = [5, 12, 45, 100, 250]; 
+
+    let selectedNumbers = [];
+
+    const grid = document.getElementById('grid');
+    const selectedList = document.getElementById('selected-list');
+    const buyBtn = document.getElementById('buy-btn');
+
+    function renderGrid() {
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL_NUMBERS; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'number-btn';
+        btn.textContent = i;
+        btn.id = `num-${i}`;
+
+        if (OCCUPIED_NUMBERS.includes(i)) {
+          btn.disabled = true;
+        } else {
+          btn.onclick = () => toggleNumber(i);
+        }
+
+        grid.appendChild(btn);
+      }
+    }
+
+    function toggleNumber(num) {
+      const btn = document.getElementById(`num-${num}`);
+      if (selectedNumbers.includes(num)) {
+        selectedNumbers = selectedNumbers.filter(n => n !== num);
+        btn.classList.remove('selected');
+      } else {
+        selectedNumbers.push(num);
+        btn.classList.add('selected');
+      }
+
+      updateFooter();
+    }
+
+    function updateFooter() {
+      if (selectedNumbers.length === 0) {
+        selectedList.textContent = 'Nenhum';
+        buyBtn.disabled = true;
+      } else {
+        selectedNumbers.sort((a, b) => a - b);
+        selectedList.textContent = selectedNumbers.join(', ');
+        buyBtn.disabled = false;
+      }
+    }
+
+    function filterNumbers() {
+      const query = document.getElementById('search').value;
+      for (let i = 1; i <= TOTAL_NUMBERS; i++) {
+        const btn = document.getElementById(`num-${i}`);
+        if (query === '' || i.toString().includes(query)) {
+          btn.style.display = 'block';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }
+
+    function checkout() {
+      const nums = selectedNumbers.join(', ');
+      const text = `Olá! Gostaria de reservar o(s) seguinte(s) número(s) para a rifa do dia 13/11: *${nums}*`;
+      const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    renderGrid();
+  </script>
+</body>
+</html>
