@@ -267,6 +267,20 @@
       });
     }
 
+    function fecharModal() {
+      document.getElementById('modal-comprovante').style.display = 'none';
+    
+      selectedNumbers = [];
+      renderGrid();
+      updateFooter();
+    
+      document.getElementById('nome').value = '';
+      document.getElementById('telefone').value = '';
+      document.getElementById('email').value = '';
+    
+      buyBtn.textContent = 'Confirmar e Gerar Comprovante 🧾';
+    }
+
     function abrirWhatsApp() {
       const nome = document.getElementById('nome').value;
       const numeros = selectedNumbers.join(', ');
