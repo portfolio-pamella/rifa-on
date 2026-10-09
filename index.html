@@ -75,6 +75,7 @@
       <p class="info-box">
         Esta rifa foi criada com o intuito de arrecadar recursos que serão destinados às <br><strong>obras e melhorias internas do nosso terreiro</strong>. 🙏✨<br><br>
         Escolha os seus números abaixo (<strong>R$ 5,00 por número</strong>) e clique no botão para confirmar a disponibilidade do número escolhido e enviar o comprovante via WhatsApp!
+        <br><strong style="color: #ffc107;">⚠️ ATENÇÃO: Os números escolhidos só serão oficialmente reservados após o envio do comprovante de pagamento Pix pelo WhatsApp!</strong>
       </p>
       <div class="date-badge">📅 Sorteio: 13/11/2026</div>
     </header>
@@ -125,14 +126,20 @@
         <p><strong>Data da Reserva:</strong> <span id="comp-data"></span></p>
       </div>
   
-      <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
-        Para efetivar seu número, realize o Pix de <strong id="pix-valor"></strong> para a Chave Pix abaixo e envie o comprovante no WhatsApp:
+      <div style="background: rgba(255, 193, 7, 0.15); border: 1px solid #ffc107; padding: 12px; border-radius: 8px; margin: 15px 0; text-align: center;">
+        <p style="font-size: 0.9rem; color: #ffc107; font-weight: bold; margin: 0;">
+          ⚠️ Os números só serão oficialmente reservados após o envio do comprovante Pix no WhatsApp!
+        </p>
+      </div>
+
+      <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 10px;">
+        Para efetivar a reserva de seu(s) número(s), realize o Pix de <strong id="pix-valor"></strong> para a Chave Pix abaixo e envie o comprovante:
       </p>
   
       <div style="margin: 15px 0; text-align: center;">
         <small style="color: var(--text-muted); display: block; margin-bottom: 5px;">Chave Pix (Copiar e Cola):</small>
         <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #000; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--primary);">
-          <span id="chave-pix-texto" style="font-weight: bold; color: var(--primary); font-family: monospace; font-size: 1rem;">SUA-CHAVE-PIX-AQUI</span>
+          <span id="chave-pix-texto" style="font-weight: bold; color: var(--primary); font-family: monospace; font-size: 1rem;">45.824.013/0001-13</span>
           <button onclick="copiarChavePix()" title="Copiar Chave Pix" style="background: transparent; border: none; color: var(--primary); cursor: pointer; display: flex; align-items: center; padding: 2px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
