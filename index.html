@@ -61,7 +61,6 @@
     }
     .buy-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-    /* Modal do Comprovante */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: #1e1e1e; padding: 25px; border-radius: 12px; max-width: 450px; width: 100%; text-align: center; border: 2px solid var(--primary); }
     .ticket { background: #2a2a2a; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px dashed var(--primary); text-align: left; }
@@ -109,9 +108,11 @@
     </div>
   </div>
 
-  <!-- MODAL COMPROVANTE DIGITAL -->
   <div class="modal" id="modal-comprovante">
-    <div class="modal-content">
+    <div class="modal-content" style="position: relative;">
+      
+      <button onclick="fecharModal()" title="Fechar" style="position: absolute; top: 12px; right: 15px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; font-weight: bold;">✕</button>
+  
       <h2 style="color: var(--primary);">🎉 Reserva Registrada!</h2>
       <p style="font-size: 0.9rem; margin-top: 5px;">Tire um print desta tela como seu comprovante de participação.</p>
       
@@ -123,36 +124,36 @@
         <p><strong>Total a Pagar:</strong> <span id="comp-total" style="font-weight: bold;"></span></p>
         <p><strong>Data da Reserva:</strong> <span id="comp-data"></span></p>
       </div>
-
+  
       <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
         Para efetivar seu número, realize o Pix de <strong id="pix-valor"></strong> para a Chave Pix abaixo e envie o comprovante no WhatsApp:
-        <br><br>
-        <div style="margin: 15px 0; text-align: center;">
-          <small style="color: var(--text-muted); display: block; margin-bottom: 5px;">Chave Pix (Copiar e Cola):</small>
-          <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #000; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--primary);">
-            <span id="chave-pix-texto" style="font-weight: bold; color: var(--primary); font-family: monospace; font-size: 1rem;">45.824.013/0001-13</span>
-            <button onclick="copiarChavePix()" title="Copiar Chave Pix" style="background: transparent; border: none; color: var(--primary); cursor: pointer; display: flex; align-items: center; padding: 2px;">
-              <!-- Ícone SVG de Copiar (Pranchinha) -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-            </button>
-          </div>
-          <small id="mensagem-copiado" style="display: block; color: var(--primary); font-size: 0.8rem; margin-top: 5px; height: 16px; opacity: 0; transition: opacity 0.3s;"></small>
-        </div>
       </p>
-
-      <button class="buy-btn" onclick="abrirWhatsApp()">Enviar Comprovante no WhatsApp 📲</button>
+  
+      <div style="margin: 15px 0; text-align: center;">
+        <small style="color: var(--text-muted); display: block; margin-bottom: 5px;">Chave Pix (Copiar e Cola):</small>
+        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #000; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--primary);">
+          <span id="chave-pix-texto" style="font-weight: bold; color: var(--primary); font-family: monospace; font-size: 1rem;">SUA-CHAVE-PIX-AQUI</span>
+          <button onclick="copiarChavePix()" title="Copiar Chave Pix" style="background: transparent; border: none; color: var(--primary); cursor: pointer; display: flex; align-items: center; padding: 2px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+        <small id="mensagem-copiado" style="display: block; color: var(--primary); font-size: 0.8rem; margin-top: 5px; height: 16px; opacity: 0; transition: opacity 0.3s;"></small>
+      </div>
+  
+      <button class="buy-btn" onclick="abrirWhatsApp()" style="margin-bottom: 10px;">Enviar Comprovante no WhatsApp 📲</button>
+      
+      <button onclick="fecharModal()" style="width: 100%; background: transparent; border: 1px solid #555; color: #ccc; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">Fechar Janela</button>
     </div>
   </div>
-
   <script>
     const TOTAL_NUMBERS = 500;
-    const PHONE_NUMBER = "5531997163796"; // Seu WhatsApp com DDD
+    const PHONE_NUMBER = "5531997163796"; // WhatsApp TULO com DDD
     const PRICE_PER_NUM = 5.00;
     
-    // COLE AQUI A URL GERADA NO GOOGLE APPS SCRIPT
+    // URL GOOGLE APPS SCRIPT
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhgJe8b0mEGdww1yqOrQSWDfXX8FYzlvKpftZlV2Rs2nUa5t8uTasR3emCT16jjnkt/exec"; 
 
     const OCCUPIED_NUMBERS = []; // Números já vendidos
@@ -253,13 +254,11 @@
     function copiarChavePix() {
       const chavePix = document.getElementById('chave-pix-texto').innerText;
       
-      // Copia o texto para a área de transferência do dispositivo
       navigator.clipboard.writeText(chavePix).then(() => {
         const msg = document.getElementById('mensagem-copiado');
         msg.textContent = '✓ Chave Pix copiada!';
         msg.style.opacity = '1';
     
-        // Oculta o aviso "Copiado!" após 2,5 segundos
         setTimeout(() => {
           msg.style.opacity = '0';
         }, 2500);
